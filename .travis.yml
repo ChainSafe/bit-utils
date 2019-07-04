@@ -17,8 +17,3 @@ deploy:
       local_dir: docs
       on:
         branch: master
-    - provider: script
-      script: sh ./scripts/release-js.sh
-      on:
-        tags: true
-        branch: master
