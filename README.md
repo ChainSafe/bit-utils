@@ -25,7 +25,7 @@ list.equals(Buffer.from([9, 1]));
 bitList.getBit(list, 0) === true;
 ```
 
-### BitList
+### BitVector
 ```typescript
 import {BitVector, bitVector} from "@chainsafe/bit-utils";
 
