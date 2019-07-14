@@ -20,21 +20,27 @@ export function bitIndex(byte: number): number {
   return index;
 }
 
-export function getBitfieldBit(buf: Uint8Array, bitLength: number, index: number): boolean {
-  if (index >= bitLength) {
-    throw new Error(`Cannot get bit ${index} of bitfield with bit length ${bitLength}`);
-  }
+export function getBitfieldBit(buf: Uint8Array, index: number): boolean {
   return ((buf[index>>3] >> (index&7)) & 1) == 1;
 }
 
-export function setBitfieldBit(buf: Uint8Array, bitLength: number, index: number, value: boolean): void {
-  if (index >= bitLength) {
-    throw new Error(`Cannot set bit ${index} of bitfield with bit length ${bitLength}`);
-  }
+export function setBitfieldBit(buf: Uint8Array, index: number, value: boolean): void {
   const bit = 1 << (index & 7);
   if (value) {
     buf[index >> 3] |= bit;
   } else {
     buf[index >> 3] &= bit ^ 255;
   }
+}
+
+export abstract class BitArray {
+  public readonly bitLength: number;
+  protected byteArray: Uint8Array;
+  public constructor(byteArray: Uint8Array, bitLength: number) {
+    this.byteArray = byteArray;
+    this.bitLength = bitLength;
+  }
+  public abstract getBit(index: number): boolean;
+  public abstract setBit(index: number, value: boolean): void;
+  public abstract toBitfield(): Uint8Array;
 }

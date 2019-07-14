@@ -1,5 +1,5 @@
 /** @module bitVector */
-import {bitIndex, getBitfieldBit, setBitfieldBit} from "./base";
+import {bitIndex, getBitfieldBit, setBitfieldBit, BitArray} from "./base";
 
 export function assertBitLength(vector: Uint8Array, length: number): void {
   const byteLength = vector.length;
@@ -17,33 +17,24 @@ export function assertBitLength(vector: Uint8Array, length: number): void {
   }
 }
 
-export function getBit(vector: Uint8Array, length: number, index: number): boolean {
-  assertBitLength(vector, length);
-  return getBitfieldBit(vector, length, index);
-}
-
-export function setBit(vector: Uint8Array, length: number, index: number, value: boolean): void {
-  assertBitLength(vector, length);
-  return setBitfieldBit(vector, length, index, value);
-}
-
-export class BitVector {
-  public readonly bitLength: number;
-  private byteArray: Uint8Array;
-  public constructor(bitLength: number, byteArray: Uint8Array) {
-    this.bitLength = bitLength;
-    this.byteArray = byteArray;
-  }
+export class BitVector extends BitArray {
   public getBit(index: number): boolean {
-    return getBit(this.byteArray, this.bitLength, index);
+    if (index < 0 || index >= this.bitLength) {
+      throw new Error('Index out of bounds');
+    }
+    return getBitfieldBit(this.byteArray, index);
   }
   public setBit(index: number, value: boolean): void {
-    setBit(this.byteArray, this.bitLength, index, value);
+    if (index < 0 || index >= this.bitLength) {
+      throw new Error('Index out of bounds');
+    }
+    setBitfieldBit(this.byteArray, index, value);
   }
-  public serialize(): Uint8Array {
-    return this.byteArray;
+  public toBitfield(): Uint8Array {
+    return this.byteArray.slice();
   }
-  public static fromUint8Array(bitLength: number, array: Uint8Array): BitVector {
-    return new BitVector(bitLength, array.slice());
+  public static fromBitfield(array: Uint8Array, bitLength: number): BitVector {
+    assertBitLength(array, bitLength);
+    return new BitVector(array.slice(), bitLength);
   }
 }

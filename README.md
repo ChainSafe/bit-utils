@@ -13,36 +13,38 @@ Bitlist/Bitvector Utilities
 ```typescript
 import {BitList} from "@chainsafe/bit-utils";
 
-// A BitList is deserialized from a Uint8Array bitfield with a padding bit marking the length
-const list: BitList = BitList.deserialize(Buffer.from([11]));
-// or can be created from a Uint8Array bitfield (without a padding bit) and an explicit length
-const list2: BitList = BitList.fromUint8Array(3, Buffer.from([3]));
+// A BitList is created from a Uint8Array bitfield and a length of bits
+const list: BitList = BitList.fromBitfield(Buffer.from([3]), 3);
+// Or a BitList can be deserialized from a Uint8Array bitfield with a padding bit marking the length
+const list2: BitList = BitList.deserialize(Buffer.from([11]));
 
-// get bit length
+// get length of bits
 const _bitLength = list.bitLength;
 // set bit
 list.setBit(0, true);
 // get bit
 list.getBit(0) === true;
+// serialize bitlist (without padding bit)
+const output: Uint8Array = list.toBitfield();
 // serialize bitlist (with padding bit)
-const output: Uint8Array = list.serialize();
+const output2: Uint8Array = list.serialize();
 ```
 
 ### BitVector
 ```typescript
 import {BitVector} from "@chainsafe/bit-utils";
 
-// A BitVector created from a Uint8Array bitfield and an externally defined bit length
-const vector: BitVector = BitVector.fromUint8Array(3, Buffer.from([3]));
+// A BitVector is created from a Uint8Array bitfield and a length of bits
+const vector: BitVector = BitVector.fromBitfield(Buffer.from([3]), 3);
 
-// get bit length
+// get length of bits
 const _bitLength = vector.bitLength;
 // set bit
 vector.setBit(0, true);
 // get bit
 vector.getBit(0) === true
 // serialize bitvector (loses length information)
-const output: Uint8Array = vector.serialize();
+const output: Uint8Array = vector.toBitfield();
 ```
 
 ## API

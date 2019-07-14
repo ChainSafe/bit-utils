@@ -1,6 +1,6 @@
 import {expect} from "chai";
 
-import {BitVector, assertBitLength, getBit, setBit} from "../src/vector";
+import {BitVector, assertBitLength} from "../src/vector";
 
 describe("BitVector", () => {
   it("should assertBitLength properly", () => {
@@ -26,16 +26,16 @@ describe("BitVector", () => {
       {list: Buffer.from([3]), length: 2, index: 0, expected: true},
     ];
     for (const {list, length, index, expected} of testCases) {
-      expect(BitVector.fromUint8Array(length, list).getBit(index)).to.equal(expected);
+      expect(BitVector.fromBitfield(list, length).getBit(index)).to.equal(expected);
     }
   });
-  it("should throw on getBit w/ wrong length", () => {
+  it("should throw on getBit w/ invalid index", () => {
     const testCases: {list: Uint8Array; length: number; index: number}[] = [
-      {list: Buffer.from([2]), length: 1, index: 0},
-      {list: Buffer.from([3]), length: 1, index: 0},
+      {list: Buffer.from([2]), length: 2, index: -1},
+      {list: Buffer.from([2]), length: 2, index: 3},
     ];
     for (const {list, length, index} of testCases) {
-      expect(() => getBit(list, length, index)).to.throw();
+      expect(() => BitVector.fromBitfield(list, length).getBit(index)).to.throw();
     }
   });
   it("should setBit properly", () => {
@@ -45,19 +45,18 @@ describe("BitVector", () => {
       {list: Buffer.from([8]), length: 4, index: 0, value: true, expected: Buffer.from([9])},
     ];
     for (const {list, length, index, value, expected} of testCases) {
-      const bv = BitVector.fromUint8Array(length, list);
+      const bv = BitVector.fromBitfield(list, length);
       bv.setBit(index, value)
-      expect(bv.serialize()).to.deep.equal(expected);
+      expect(bv.toBitfield()).to.deep.equal(expected);
     }
   });
-  it("should throw on setBit w/ wrong length", () => {
-    const testCases: {list: Uint8Array; length: number; index: number; value: boolean}[] = [
-      {list: Buffer.from([2]), length: 9, index: 0, value: false},
-      {list: Buffer.from([2]), length: 1, index: 0, value: true},
-      {list: Buffer.from([8]), length: 3, index: 0, value: true},
+  it("should throw on setBit w/ invalid index", () => {
+    const testCases: {list: Uint8Array; length: number; index: number}[] = [
+      {list: Buffer.from([3]), length: 2, index: -1},
+      {list: Buffer.from([3]), length: 2, index: 3},
     ];
-    for (const {list, length, index, value} of testCases) {
-      expect(() => setBit(list, length, index, value)).to.throw();
+    for (const {list, length, index} of testCases) {
+      expect(() => BitVector.fromBitfield(list, length).setBit(index, true)).to.throw();
     }
   });
 });

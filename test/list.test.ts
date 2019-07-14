@@ -12,14 +12,15 @@ describe("BitList", () => {
       expect(BitList.deserialize(list).serialize()).to.deep.equal(list);
     }
   });
-  it("should properly create BitList objects from Uint8Arrays", () => {
+  it("should properly create BitList objects from bitfields", () => {
     const testCases: {array: Uint8Array; length: number; expected: Uint8Array}[] = [
       {array: Buffer.from([1]), length: 1, expected: Buffer.from([3])},
       {array: Buffer.from([1]), length: 8, expected: Buffer.from([1, 1])},
     ];
     for (const {array, length, expected} of testCases) {
-      const bl = BitList.fromUint8Array(length, array);
+      const bl = BitList.fromBitfield(array, length);
       expect(bl.serialize()).to.deep.equal(expected);
+      expect(bl.toBitfield()).to.deep.equal(array);
     }
   });
   it("should throw creating BitList objects from missized Uint8Arrays", () => {
@@ -28,7 +29,7 @@ describe("BitList", () => {
       {array: Buffer.from([1, 1]), length: 8},
     ];
     for (const {array, length} of testCases) {
-      expect(() => BitList.fromUint8Array(length, array)).to.throw();
+      expect(() => BitList.fromBitfield(array, length)).to.throw();
     }
   });
   it("should throw on deserializing invalid BitList Uint8Arrays", () => {
@@ -76,6 +77,15 @@ describe("BitList", () => {
       expect(BitList.deserialize(list).getBit(index)).to.equal(expected);
     }
   });
+  it("should throw on getBit w/ invalid index", () => {
+    const testCases: {list: Uint8Array; length: number; index: number}[] = [
+      {list: Buffer.from([2]), length: 2, index: -1},
+      {list: Buffer.from([2]), length: 2, index: 3},
+    ];
+    for (const {list, length, index} of testCases) {
+      expect(() => BitList.fromBitfield(list, length).getBit(index)).to.throw();
+    }
+  });
   it("should setBit properly", () => {
     const testCases: {list: Uint8Array; index: number; value: boolean; expected: Uint8Array}[] = [
       {list: Buffer.from([2]), index: 0, value: false, expected: Buffer.from([2])},
@@ -86,6 +96,15 @@ describe("BitList", () => {
       const bl = BitList.deserialize(list);
       bl.setBit(index, value)
       expect(bl.serialize()).to.deep.equal(expected);
+    }
+  });
+  it("should throw on setBit w/ invalid index", () => {
+    const testCases: {list: Uint8Array; length: number; index: number}[] = [
+      {list: Buffer.from([3]), length: 2, index: -1},
+      {list: Buffer.from([3]), length: 2, index: 3},
+    ];
+    for (const {list, length, index} of testCases) {
+      expect(() => BitList.fromBitfield(list, length).setBit(index, true)).to.throw();
     }
   });
 });
