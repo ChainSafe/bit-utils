@@ -11,35 +11,38 @@ Bitlist/Bitvector Utilities
 
 ### BitList
 ```typescript
-import {BitList, bitList} from "@chainsafe/bit-utils";
+import {BitList} from "@chainsafe/bit-utils";
 
-// A BitList is a Uint8Array with bit access and a padding bit at the end.
-const list: BitList = Buffer.from([8, 1]);
+// A BitList is deserialized from a Uint8Array bitfield with a padding bit marking the length
+const list: BitList = BitList.deserialize(Buffer.from([11]));
+// or can be created from a Uint8Array bitfield (without a padding bit) and an explicit length
+const list2: BitList = BitList.fromUint8Array(3, Buffer.from([3]));
 
 // get bit length
-const _bitLength = bitList.bitLength(list);
+const _bitLength = list.bitLength;
 // set bit
-bitList.setBit(list, 0, true);
-list.equals(Buffer.from([9, 1]));
+list.setBit(0, true);
 // get bit
-bitList.getBit(list, 0) === true;
+list.getBit(0) === true;
+// serialize bitlist (with padding bit)
+const output: Uint8Array = list.serialize();
 ```
 
 ### BitVector
 ```typescript
-import {BitVector, bitVector} from "@chainsafe/bit-utils";
+import {BitVector} from "@chainsafe/bit-utils";
 
-// A BitVector is a static Uint8Array with bit access and an externally defined bit length
-// No bits are allowed to be set beyond the bit length
-const vector: BitVector = Buffer.from([8, 1]);
+// A BitVector created from a Uint8Array bitfield and an externally defined bit length
+const vector: BitVector = BitVector.fromUint8Array(3, Buffer.from([3]));
 
-// assert the bit length
-bitVector.assertBitLength(vector, 9); // will throw if invalid assertion
+// get bit length
+const _bitLength = vector.bitLength;
 // set bit
-bitVector.setBit(vector, 9, 0, true);
-vector.equals(Buffer.from([9, 1]));
+vector.setBit(0, true);
 // get bit
-bitVector.getBit(vector, 9, 0, true) === true
+vector.getBit(0) === true
+// serialize bitvector (loses length information)
+const output: Uint8Array = vector.serialize();
 ```
 
 ## API
