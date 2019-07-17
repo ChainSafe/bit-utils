@@ -55,4 +55,7 @@ export class BitList extends BitArray {
     setBitfieldBit(list, bitLength, true);
     return new BitList(list, bitLength);
   }
+  public equals(other: BitList): boolean {
+    return other instanceof BitList && super.equals(other);
+  }
 }

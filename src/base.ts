@@ -43,4 +43,15 @@ export abstract class BitArray {
   public abstract getBit(index: number): boolean;
   public abstract setBit(index: number, value: boolean): void;
   public abstract toBitfield(): Uint8Array;
+  public equals(other: BitArray): boolean {
+    if (this.bitLength !== other.bitLength) {
+      return false;
+    }
+    for (let i = 0; i < this.byteArray.length; i++) {
+      if (this.byteArray[i] !== other.byteArray[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

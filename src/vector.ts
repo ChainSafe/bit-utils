@@ -37,4 +37,7 @@ export class BitVector extends BitArray {
     assertBitLength(array, bitLength);
     return new BitVector(array.slice(), bitLength);
   }
+  public equals(other: BitVector): boolean {
+    return other instanceof BitVector && super.equals(other);
+  }
 }

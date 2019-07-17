@@ -59,4 +59,12 @@ describe("BitVector", () => {
       expect(() => BitVector.fromBitfield(list, length).setBit(index, true)).to.throw();
     }
   });
+  it("should assertBitLength properly", () => {
+    const testCases: {vector: Uint8Array; length: number}[] = [
+      {vector: Buffer.from([3]), length: 2},
+    ];
+    for (const {vector, length} of testCases) {
+      expect(BitVector.fromBitfield(vector, length).equals(BitVector.fromBitfield(vector, length))).to.equal(true);
+    }
+  });
 });

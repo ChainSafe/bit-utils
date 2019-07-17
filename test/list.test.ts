@@ -107,4 +107,18 @@ describe("BitList", () => {
       expect(() => BitList.fromBitfield(list, length).setBit(index, true)).to.throw();
     }
   });
-});
+  it("should getBit properly", () => {
+    const testCases: {list: Uint8Array}[] = [
+      {list: Buffer.from([2])},
+      {list: Buffer.from([3])},
+      {list: Buffer.from([7])},
+      {list: Buffer.from([7])},
+      {list: Buffer.from([8])},
+      {list: Buffer.from([8])},
+      {list: Buffer.from([8])},
+    ];
+    for (const {list} of testCases) {
+      expect(BitList.deserialize(list).equals(BitList.deserialize(list))).to.equal(true);
+    }
+  });
+ });
