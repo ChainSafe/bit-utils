@@ -121,4 +121,11 @@ describe("BitList", () => {
       expect(BitList.deserialize(list).equals(BitList.deserialize(list))).to.equal(true);
     }
   });
+  it("should clone properly", () => {
+    const b1 = BitList.fromBitfield(Buffer.alloc(1), 8);
+    const b2 = b1.clone();
+    expect(b1.equals(b2)).to.equal(true);
+    b1.setBit(0, true);
+    expect(b1.equals(b2)).to.equal(false);
+  });
  });

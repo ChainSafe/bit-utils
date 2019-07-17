@@ -54,4 +54,7 @@ export abstract class BitArray {
     }
     return true;
   }
+  public clone(): this {
+    return new (this as any).__proto__.constructor(this.byteArray.slice(), this.bitLength);
+  }
 }
