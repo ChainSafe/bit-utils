@@ -11,6 +11,7 @@ describe("BitVector", () => {
       {vector: Buffer.from([2]), length: 1, error: true},
       {vector: Buffer.from([2]), length: 2, error: false},
       {vector: Buffer.from([3]), length: 2, error: false},
+      {vector: Buffer.from([3]), length: 8, error: false},
     ];
     for (const {vector, length, error} of testCases) {
       if (error) {
@@ -59,7 +60,7 @@ describe("BitVector", () => {
       expect(() => BitVector.fromBitfield(list, length).setBit(index, true)).to.throw();
     }
   });
-  it("should assertBitLength properly", () => {
+  it("should equals properly", () => {
     const testCases: {vector: Uint8Array; length: number}[] = [
       {vector: Buffer.from([3]), length: 2},
     ];

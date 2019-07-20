@@ -10,10 +10,12 @@ export function assertBitLength(vector: Uint8Array, length: number): void {
   if (length === 0) {
     return;
   }
-  const lastByteBitLength = bitIndex(vector[byteLength - 1]) + 1;
   const expectedLastByteBitLength = length & 7;
-  if (lastByteBitLength > expectedLastByteBitLength) {
-    throw new Error(`BitVector has last byte bit length of ${lastByteBitLength}, expected <= ${expectedLastByteBitLength}`)
+  if (expectedLastByteBitLength !== 0) {
+    const lastByteBitLength = bitIndex(vector[byteLength - 1]) + 1;
+    if (lastByteBitLength > expectedLastByteBitLength) {
+      throw new Error(`BitVector has last byte bit length of ${lastByteBitLength}, expected <= ${expectedLastByteBitLength}`)
+    }
   }
 }
 
