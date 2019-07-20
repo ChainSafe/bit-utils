@@ -35,6 +35,18 @@ export class BitVector extends BitArray {
   public toBitfield(): Uint8Array {
     return this.byteArray.slice();
   }
+  public push(value: boolean): void {
+    let carry = value ? 1 : 0;
+    for (let i = 0; i < this.byteArray.length; i++) {
+      const oldByte = this.byteArray[i];
+      this.byteArray[i] = ((oldByte << 1) + carry) & 255;
+      carry = oldByte >> 7;
+    }
+    const lastBitLength = this.bitLength & 7;
+    if (lastBitLength !== 0) {
+      this.byteArray[this.byteArray.length - 1] = this.byteArray[this.byteArray.length - 1] & (255 >> (8 - lastBitLength));
+    }
+  }
   public static fromBitfield(array: Uint8Array, bitLength: number): BitVector {
     assertBitLength(array, bitLength);
     return new BitVector(array.slice(), bitLength);

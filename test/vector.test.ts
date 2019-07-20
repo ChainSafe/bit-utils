@@ -68,4 +68,17 @@ describe("BitVector", () => {
       expect(BitVector.fromBitfield(vector, length).equals(BitVector.fromBitfield(vector, length))).to.equal(true);
     }
   });
+  it("should push properly", () => {
+    const testCases: {pre: BitVector; value: boolean; post: BitVector}[] = [
+      {pre: BitVector.fromBitfield(Buffer.from([1]), 8), value: false,  post: BitVector.fromBitfield(Buffer.from([2]), 8)},
+      {pre: BitVector.fromBitfield(Buffer.from([1]), 8), value: true,  post: BitVector.fromBitfield(Buffer.from([3]), 8)},
+      {pre: BitVector.fromBitfield(Buffer.from([1, 0]), 9), value: false,  post: BitVector.fromBitfield(Buffer.from([2, 0]), 9)},
+      {pre: BitVector.fromBitfield(Buffer.from([1, 1]), 9), value: false,  post: BitVector.fromBitfield(Buffer.from([2, 0]), 9)},
+    ];
+    for (const {pre, value, post} of testCases) {
+      pre.push(value);
+      expect(pre.equals(post)).to.equal(true);
+    }
+
+  });
 });
