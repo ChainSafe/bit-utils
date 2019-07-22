@@ -128,4 +128,12 @@ describe("BitList", () => {
     b1.setBit(0, true);
     expect(b1.equals(b2)).to.equal(false);
   });
+  it("should identify a BitList properly", () => {
+    const b1 = BitList.fromBitfield(Buffer.alloc(1), 8);
+    const b2 = {};
+    const b3 = [true, true];
+    expect(BitList.isBitList(b1)).to.equal(true);
+    expect(BitList.isBitList(b2)).to.equal(false);
+    expect(BitList.isBitList(b3)).to.equal(false);
+  });
  });

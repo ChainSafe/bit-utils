@@ -79,6 +79,13 @@ describe("BitVector", () => {
       pre.push(value);
       expect(pre.equals(post)).to.equal(true);
     }
-
+  });
+  it("should identify a BitList properly", () => {
+    const b1 = BitVector.fromBitfield(Buffer.alloc(1), 8);
+    const b2 = {};
+    const b3 = [true, true];
+    expect(BitVector.isBitVector(b1)).to.equal(true);
+    expect(BitVector.isBitVector(b2)).to.equal(false);
+    expect(BitVector.isBitVector(b2)).to.equal(false);
   });
 });

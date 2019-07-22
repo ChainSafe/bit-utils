@@ -54,4 +54,11 @@ export class BitVector extends BitArray {
   public equals(other: BitVector): boolean {
     return other instanceof BitVector && super.equals(other);
   }
+  public static isBitVector(instance: BitVector | any): boolean {
+    return (
+      instance.byteArray instanceof Uint8Array &&
+      Number.isInteger(instance.bitLength) &&
+      instance.constructor && instance.constructor.name === 'BitVector'
+    );
+  }
 }

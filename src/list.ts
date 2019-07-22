@@ -58,4 +58,11 @@ export class BitList extends BitArray {
   public equals(other: BitList): boolean {
     return other instanceof BitList && super.equals(other);
   }
+  public static isBitList(instance: BitList | any): boolean {
+    return (
+      instance.byteArray instanceof Uint8Array &&
+      Number.isInteger(instance.bitLength) &&
+      instance.constructor && instance.constructor.name === 'BitList'
+    );
+  }
 }
