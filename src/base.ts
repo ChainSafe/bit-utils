@@ -1,5 +1,9 @@
 /** @module bitUtils */
 
+export function copy(buffer: Buffer | Uint8Array): Buffer | Uint8Array {
+  return Uint8Array.prototype.slice.apply(buffer);
+}
+
 /**
  * Get index of left-most 1 bit
  */

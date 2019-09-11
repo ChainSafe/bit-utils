@@ -1,5 +1,5 @@
 /** @module bitVector */
-import {bitIndex, getBitfieldBit, setBitfieldBit, BitArray} from "./base";
+import {copy, bitIndex, getBitfieldBit, setBitfieldBit, BitArray} from "./base";
 
 export function assertBitLength(vector: Uint8Array, length: number): void {
   const byteLength = vector.length;
@@ -35,7 +35,7 @@ export class BitVector extends BitArray {
     setBitfieldBit(this.byteArray, index, value);
   }
   public toBitfield(): Uint8Array {
-    return this.byteArray.slice();
+    return copy(this.byteArray);
   }
   public push(value: boolean): void {
     let carry = value ? 1 : 0;
@@ -51,7 +51,7 @@ export class BitVector extends BitArray {
   }
   public static fromBitfield(array: Uint8Array, bitLength: number): BitVector {
     assertBitLength(array, bitLength);
-    return new BitVector(array.slice(), bitLength);
+    return new BitVector(copy(array), bitLength);
   }
   public equals(other: BitVector): boolean {
     return other instanceof BitVector && super.equals(other);

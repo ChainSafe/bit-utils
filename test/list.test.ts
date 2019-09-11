@@ -136,4 +136,10 @@ describe("BitList", () => {
     expect(BitList.isBitList(b2)).to.equal(false);
     expect(BitList.isBitList(b3)).to.equal(false);
   });
- });
+  it("should handle troublesome test cases", () => {
+    const b = BitList.fromBitfield(Buffer.alloc(1), 1);
+    let x = b.serialize()
+    x[0] = 0
+    expect(() => BitList.deserialize(b.serialize())).to.not.throw();
+  });
+});

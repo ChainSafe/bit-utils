@@ -1,5 +1,5 @@
 /** @module bitList */
-import {bitIndex, getBitfieldBit, setBitfieldBit, BitArray} from "./base";
+import {copy, bitIndex, getBitfieldBit, setBitfieldBit, BitArray} from "./base";
 
 export function bitLength(list: Uint8Array): number {
   if (list.length === 0) {
@@ -28,16 +28,16 @@ export class BitList extends BitArray {
     setBitfieldBit(this.byteArray, index, value);
   }
   public serialize(): Uint8Array {
-    return this.byteArray.slice();
+    return copy(this.byteArray);
   }
   public static deserialize(list: Uint8Array): BitList {
-    return new BitList(list.slice(), bitLength(list));
+    return new BitList(copy(list), bitLength(list));
   }
   public toBitfield(): Uint8Array {
     if (this.bitLength % 8 === 0) {
-      return this.byteArray.slice(0, this.byteArray.length - 1);
+      return copy(this.byteArray.slice(0, this.byteArray.length - 1));
     } else {
-      const bitfield = this.byteArray.slice();
+      const bitfield = copy(this.byteArray);
       setBitfieldBit(bitfield, this.bitLength, false);
       return bitfield;
     }
@@ -52,7 +52,7 @@ export class BitList extends BitArray {
       list = new Uint8Array(byteLength + 1);
       list.set(array);
     } else {
-      list = array.slice();
+      list = copy(array);
     }
     setBitfieldBit(list, bitLength, true);
     return new BitList(list, bitLength);
