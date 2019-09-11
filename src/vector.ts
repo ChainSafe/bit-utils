@@ -20,6 +20,8 @@ export function assertBitLength(vector: Uint8Array, length: number): void {
 }
 
 export class BitVector extends BitArray {
+  private static __bitvector = true;
+
   public getBit(index: number): boolean {
     if (index < 0 || index >= this.bitLength) {
       throw new Error('Index out of bounds');
@@ -58,7 +60,8 @@ export class BitVector extends BitArray {
     return (
       instance.byteArray instanceof Uint8Array &&
       Number.isInteger(instance.bitLength) &&
-      instance.constructor && instance.constructor.name === 'BitVector'
+      instance.constructor &&
+      instance.constructor.__bitvector
     );
   }
 }

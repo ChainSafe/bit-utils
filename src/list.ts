@@ -13,6 +13,8 @@ export function bitLength(list: Uint8Array): number {
 }
 
 export class BitList extends BitArray {
+  private static __bitlist = true;
+
   public getBit(index: number): boolean {
     if (index < 0 || index >= this.bitLength) {
       throw new Error('Index out of bounds');
@@ -62,7 +64,8 @@ export class BitList extends BitArray {
     return (
       instance.byteArray instanceof Uint8Array &&
       Number.isInteger(instance.bitLength) &&
-      instance.constructor && instance.constructor.name === 'BitList'
+      instance.constructor &&
+      instance.constructor.__bitlist
     );
   }
 }
