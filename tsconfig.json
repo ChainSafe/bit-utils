@@ -1,8 +1,10 @@
 {
-  "include": ["src"],
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
-    "strict": true
+    "strict": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   }
 }

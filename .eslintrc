@@ -3,6 +3,10 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "env": {
+    "node": true,
+    "mocha": true
+  },
   "plugins": ["@typescript-eslint"],
   "extends": ["plugin:@typescript-eslint/recommended"],
   "rules": {
