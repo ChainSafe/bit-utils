@@ -12,7 +12,7 @@
     "build": "yarn build-lib && yarn build-web && yarn build-types",
     "build:docs": "typedoc --exclude src/index.ts,src/web.ts,src/base.ts --out docs src",
     "build-lib": "babel src -x .ts -d lib --source-maps",
-    "build-types": "tsc --incremental --declaration --outDir lib --emitDeclarationOnly",
+    "build-types": "tsc --project tsconfig.build.json --declaration --outDir lib --emitDeclarationOnly --rootDir src",
     "build-web": "webpack --mode production --entry ./lib/web.js --output ./dist/bit-utils.min.js",
     "check-types": "tsc --incremental --noEmit",
     "lint": "eslint --ext .ts src/ test/",
