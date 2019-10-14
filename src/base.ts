@@ -1,4 +1,5 @@
 /** @module bitUtils */
+import * as assert from "assert";
 
 export function copy(buffer: Buffer | Uint8Array): Buffer | Uint8Array {
   return Uint8Array.prototype.slice.apply(buffer);
@@ -47,6 +48,39 @@ export abstract class BitArray {
   public abstract getBit(index: number): boolean;
   public abstract setBit(index: number, value: boolean): void;
   public abstract toBitfield(): Uint8Array;
+
+  public or(bitArray: BitArray): BitArray {
+    for(let i = 0; i < this.bitLength; i++) {
+      this.setBit(i, this.getBit(i) || bitArray.getBit(i));
+    }
+    return this;
+  }
+
+  public and(bitArray: BitArray): BitArray {
+    for(let i = 0; i < this.bitLength; i++) {
+      this.setBit(i, this.getBit(i) && bitArray.getBit(i));
+    }
+    return this;
+  }
+
+  public overlaps(bitArray: BitArray): boolean {
+    assert(this.bitLength === bitArray.bitLength);
+
+    if(this.bitLength === 0) {
+      return false;
+    }
+
+    for(let i = 0; i < this.byteArray.length; i++) {
+      //invert byte from other array and xor against original, then xor against other array
+      // if all bits are false, result is 0 and it doesn't overlap
+      const result = (~this.byteArray[i] ^ bitArray.byteArray[i]) & bitArray.byteArray[i];
+      if(result != 0) {
+        return true
+      }
+    }
+    return false;
+  }
+
   public equals(other: BitArray): boolean {
     if (this.bitLength !== other.bitLength) {
       return false;
@@ -58,6 +92,7 @@ export abstract class BitArray {
     }
     return true;
   }
+
   public clone(): this {
     return new (this as any).__proto__.constructor(this.byteArray.slice(), this.bitLength);
   }
