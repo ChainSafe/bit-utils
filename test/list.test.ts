@@ -1,6 +1,5 @@
 import {expect} from "chai";
 import {BitList, bitLength} from "../src/list";
-import {it} from "mocha";
 
 describe("BitList", () => {
   it("should properly serialize/deserialize BitList objects", () => {

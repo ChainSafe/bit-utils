@@ -1,7 +1,5 @@
 import {expect} from "chai";
-
 import {assertBitLength, BitVector} from "../src/vector";
-import {it} from "mocha";
 
 describe("BitVector", () => {
   it("should assertBitLength properly", () => {

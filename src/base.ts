@@ -49,16 +49,18 @@ export abstract class BitArray {
   public abstract setBit(index: number, value: boolean): void;
   public abstract toBitfield(): Uint8Array;
 
-  public or(bitArray: BitArray): BitArray {
-    for(let i = 0; i < this.bitLength; i++) {
-      this.setBit(i, this.getBit(i) || bitArray.getBit(i));
+  public or(bitArray: BitArray): this {
+    assert(this.bitLength === bitArray.bitLength);
+    for(let i = 0; i < this.byteArray.length; i++) {
+      this.byteArray[i] |= bitArray.byteArray[i];
     }
     return this;
   }
 
-  public and(bitArray: BitArray): BitArray {
-    for(let i = 0; i < this.bitLength; i++) {
-      this.setBit(i, this.getBit(i) && bitArray.getBit(i));
+  public and(bitArray: BitArray): this {
+    assert(this.bitLength === bitArray.bitLength);
+    for(let i = 0; i < this.byteArray.length; i++) {
+      this.byteArray[i] &= bitArray.byteArray[i];
     }
     return this;
   }
