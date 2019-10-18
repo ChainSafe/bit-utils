@@ -1,5 +1,4 @@
 import {expect} from "chai";
-
 import {BitList, bitLength} from "../src/list";
 
 describe("BitList", () => {
@@ -141,5 +140,68 @@ describe("BitList", () => {
     let x = b.serialize()
     x[0] = 0
     expect(() => BitList.deserialize(b.serialize())).to.not.throw();
+  });
+
+  it('should apply other array with or operator', function () {
+    const array1 = new BitList(new Uint8Array(16), 8);
+    const array2 = new BitList(new Uint8Array(16), 8);
+    array1.setBit(0, true);
+    array1.setBit(2, true);
+    array2.setBit(1, true);
+    array2.setBit(2, true);
+    const result = array1.or(array2);
+    expect(result.getBit(0)).to.be.true;
+    expect(result.getBit(1)).to.be.true;
+    expect(result.getBit(2)).to.be.true;
+    expect(result.getBit(3)).to.be.false;
+  });
+
+  it('should apply other array with and operator', function () {
+    const array1 = new BitList(new Uint8Array(16), 8);
+    const array2 = new BitList(new Uint8Array(16), 8);
+    array1.setBit(0, true);
+    array1.setBit(2, true);
+    array2.setBit(1, true);
+    array2.setBit(2, true);
+    const result = array1.and(array2);
+    expect(result.getBit(0)).to.be.false;
+    expect(result.getBit(1)).to.be.false;
+    expect(result.getBit(2)).to.be.true;
+    expect(result.getBit(3)).to.be.false;
+  });
+
+  it('should return that array doesnt overlap - zero array', function () {
+    const array1 = new BitList(new Uint8Array(0), 0);
+    const array2 = new BitList(new Uint8Array(0), 0);
+    const result = array1.overlaps(array2);
+    expect(result).to.be.false;
+  });
+
+  it('should fail overlap check if different length', function () {
+    const array1 = new BitList(new Uint8Array(8), 1);
+    const array2 = new BitList(new Uint8Array(0), 0);
+    expect(() => array1.overlaps(array2)).to.throw
+  });
+
+  it('should return that array overlaps', function () {
+    const array1 = new BitList(new Uint8Array(16), 8);
+    const array2 = new BitList(new Uint8Array(16), 8);
+    array1.setBit(0, true);
+    array1.setBit(2, true);
+    array2.setBit(1, true);
+    array2.setBit(2, true);
+    const result = array1.overlaps(array2);
+    expect(result).to.be.true;
+  });
+
+  it('should return that array doesnt overlap', function () {
+    const array1 = new BitList(new Uint8Array(16), 8);
+    const array2 = new BitList(new Uint8Array(16), 8);
+    array1.setBit(0, true);
+    array1.setBit(3, true);
+    array2.setBit(1, true);
+    array2.setBit(2, true);
+    const result = array1.overlaps(array2);
+    expect(result).to.be.false;
   });
 });
