@@ -1,6 +1,6 @@
 {
   "name": "@chainsafe/bit-utils",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "bitlist and bitvector utilities",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
