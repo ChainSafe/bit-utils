@@ -53,5 +53,7 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "assert": "^2.0.0"
+  }
 }
