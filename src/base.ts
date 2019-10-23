@@ -1,5 +1,5 @@
 /** @module bitUtils */
-import * as assert from "assert";
+import assert from "assert";
 
 export function copy(buffer: Buffer | Uint8Array): Buffer | Uint8Array {
   return Uint8Array.prototype.slice.apply(buffer);
