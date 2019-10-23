@@ -194,9 +194,31 @@ describe("BitList", () => {
     expect(result).to.be.true;
   });
 
+  it('should return that bitfield overlaps', function () {
+    const array1 =BitList.fromBitfield(new Uint8Array(4), 32);
+    const array2 = new BitList(new Uint8Array(4), 32);
+    array1.setBit(0, true);
+    array1.setBit(2, true);
+    array2.setBit(1, true);
+    array2.setBit(2, true);
+    const result = array1.overlaps(array2);
+    expect(result).to.be.true;
+  });
+
   it('should return that array doesnt overlap', function () {
     const array1 = new BitList(new Uint8Array(16), 8);
     const array2 = new BitList(new Uint8Array(16), 8);
+    array1.setBit(0, true);
+    array1.setBit(3, true);
+    array2.setBit(1, true);
+    array2.setBit(2, true);
+    const result = array1.overlaps(array2);
+    expect(result).to.be.false;
+  });
+
+  it('should return that bitfield doesnt overlap', function () {
+    const array1 = BitList.fromBitfield(new Uint8Array(4), 32);
+    const array2 = BitList.fromBitfield(new Uint8Array(4), 32);
     array1.setBit(0, true);
     array1.setBit(3, true);
     array2.setBit(1, true);
