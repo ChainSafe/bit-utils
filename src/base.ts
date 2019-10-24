@@ -65,6 +65,13 @@ export abstract class BitArray {
     return this;
   }
 
+
+  /**
+     * Checks if two bitarrays have overlapping bit.
+     * This method will ignore overlap in padding bit.
+     * Bot bitarrays must be of same length
+     * @param bitArray
+     */
   public overlaps(bitArray: BitArray): boolean {
     assert(this.bitLength === bitArray.bitLength);
 
@@ -74,11 +81,11 @@ export abstract class BitArray {
 
     for(let i = 0; i < this.byteArray.length; i++) {
       //invert byte from other array and xor against original, then xor against other array
-      //applying this mask won't change anything
+      //mask will clear padding bit only so it doesn't affect result
       let maskLengthBit = 255;
-      if(i === this.byteArray.length -1) {
+      if(i === this.byteArray.length - 1) {
         //inverse everything other than padding bit will clear just padding bit
-        maskLengthBit ^= (1 << (this.bitLength & 7))
+        maskLengthBit ^= (1 << (this.bitLength & 7));
       }
       // if all bits are false, result is 0 and it doesn't overlap
       const result = (~this.byteArray[i] ^ bitArray.byteArray[i]) & bitArray.byteArray[i] & maskLengthBit;
