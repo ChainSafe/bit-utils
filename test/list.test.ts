@@ -138,6 +138,16 @@ describe("BitList", () => {
     expect(index).to.be.equal(8);
   });
 
+  it("should foreach", () => {
+    const list = BitList.fromBitfield(Buffer.alloc(1, 4), 8);
+    let lastIndex = 0;
+    list.forEach((bit, index) => {
+      expect(bit).to.be.equal(list.getBit(index));
+      lastIndex = index;
+    });
+    expect(lastIndex).to.be.equal(7);
+  });
+
   it("should identify a BitList properly", () => {
     const b1 = BitList.fromBitfield(Buffer.alloc(1), 8);
     const b2 = {};

@@ -112,6 +112,14 @@ export abstract class BitArray implements Iterable<boolean> {
     return new (this as any).__proto__.constructor(this.byteArray.slice(), this.bitLength);
   }
 
+  public forEach(callback: (bit: boolean, index: number) => void): this {
+    let index = 0;
+    for(let bit of this) {
+      callback(bit, index++);
+    }
+    return this;
+  }
+
   public [Symbol.iterator](): Iterator<boolean> {
     let count = 0;
     const getBit = this.getBit.bind(this);
