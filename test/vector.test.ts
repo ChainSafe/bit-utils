@@ -1,5 +1,6 @@
 import {expect} from "chai";
 import {assertBitLength, BitVector} from "../src/vector";
+import {BitList} from "../src";
 
 describe("BitVector", () => {
   it("should assertBitLength properly", () => {
@@ -67,6 +68,17 @@ describe("BitVector", () => {
       expect(BitVector.fromBitfield(vector, length).equals(BitVector.fromBitfield(vector, length))).to.equal(true);
     }
   });
+
+  it("should iterate", () => {
+    const vector = BitVector.fromBitfield(Buffer.alloc(1, 4), 8);
+    let index = 0;
+    for(let bit of vector) {
+      expect(bit).to.be.equal(vector.getBit(index));
+      index++;
+    }
+    expect(index).to.be.equal(8);
+  });
+
   it("should push properly", () => {
     const testCases: { pre: BitVector; value: boolean; post: BitVector }[] = [
       {
