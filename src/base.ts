@@ -65,6 +65,15 @@ export abstract class BitArray {
     return this;
   }
 
+  public getBitCount(): number {
+    let count = 0;
+    for(let i = 0; i < this.bitLength; i++) {
+      if(this.getBit(i)) {
+        count++;
+      }
+    }
+    return count;
+  }
 
   /**
      * Checks if two bitarrays have overlapping bit.
