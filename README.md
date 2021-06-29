@@ -1,5 +1,4 @@
 # bit-utils
-[![Build Status](https://travis-ci.com/ChainSafe/bit-utils.svg?branch=master)](https://travis-ci.com/ChainSafe/bit-utils)
 
 Bitlist/Bitvector Utilities
 
