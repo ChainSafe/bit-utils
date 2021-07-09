@@ -156,6 +156,18 @@ describe("BitList", () => {
     expect(result.getBit(3)).to.be.false;
   });
 
+  it('should get bit count', function () {
+    const list = new BitList(new Uint8Array(16), 8);
+    list.setBit(0, true);
+    list.setBit(2, true);
+    expect(list.getBitCount()).to.be.equal(2);
+  });
+
+  it('should get bit count from bitfield', function () {
+    const list = BitList.fromBitfield(Buffer.alloc(1, 1), 8);
+    expect(list.getBitCount()).to.be.equal(1);
+  });
+
   it('should apply other array with and operator', function () {
     const array1 = new BitList(new Uint8Array(16), 8);
     const array2 = new BitList(new Uint8Array(16), 8);

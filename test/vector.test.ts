@@ -1,5 +1,6 @@
 import {expect} from "chai";
 import {assertBitLength, BitVector} from "../src/vector";
+import {BitList} from "../src";
 
 describe("BitVector", () => {
   it("should assertBitLength properly", () => {
@@ -104,6 +105,18 @@ describe("BitVector", () => {
     expect(BitVector.isBitVector(b2)).to.equal(false);
   });
 
+  it('should get bit count', function () {
+    const vector = new BitVector(new Uint8Array(16), 8);
+    vector.setBit(0, true);
+    vector.setBit(2, true);
+    expect(vector.getBitCount()).to.be.equal(2);
+  });
+
+  it('should get bit count from bitfield', function () {
+    const vector = BitVector.fromBitfield(Buffer.alloc(1, 1), 8);
+    expect(vector.getBitCount()).to.be.equal(1);
+  });
+
   it('should apply other array with or operator', function () {
     const array1 = new BitVector(new Uint8Array(16), 8);
     const array2 = new BitVector(new Uint8Array(16), 8);
@@ -117,6 +130,7 @@ describe("BitVector", () => {
     expect(result.getBit(2)).to.be.true;
     expect(result.getBit(3)).to.be.false;
   });
+
 
   it('should apply other array with and operator', function () {
     const array1 = new BitVector(new Uint8Array(16), 8);
