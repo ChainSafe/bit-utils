@@ -38,7 +38,7 @@ export function setBitfieldBit(buf: Uint8Array, index: number, value: boolean): 
   }
 }
 
-export abstract class BitArray {
+export abstract class BitArray implements Iterable<boolean> {
   public readonly bitLength: number;
   protected byteArray: Uint8Array;
   public constructor(byteArray: Uint8Array, bitLength: number) {
@@ -110,5 +110,30 @@ export abstract class BitArray {
 
   public clone(): this {
     return new (this as any).__proto__.constructor(this.byteArray.slice(), this.bitLength);
+  }
+
+  public forEach(callback: (bit: boolean, index: number) => void): this {
+    let index = 0;
+    for(let bit of this) {
+      callback(bit, index++);
+    }
+    return this;
+  }
+
+  public [Symbol.iterator](): Iterator<boolean> {
+    let count = 0;
+    const getBit = this.getBit.bind(this);
+    const length = this.bitLength;
+    const iterator: Iterator<boolean> = {
+      next(): IteratorResult<boolean> {
+
+        if(count < length) {
+          return {value: getBit(count++), done: false};
+        } else {
+          return {value: false, done: true}
+        }
+      }
+    };
+    return iterator;
   }
 }

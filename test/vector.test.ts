@@ -67,6 +67,27 @@ describe("BitVector", () => {
       expect(BitVector.fromBitfield(vector, length).equals(BitVector.fromBitfield(vector, length))).to.equal(true);
     }
   });
+
+  it("should iterate", () => {
+    const vector = BitVector.fromBitfield(Buffer.alloc(1, 4), 8);
+    let index = 0;
+    for(let bit of vector) {
+      expect(bit).to.be.equal(vector.getBit(index));
+      index++;
+    }
+    expect(index).to.be.equal(8);
+  });
+
+  it("should foreach", () => {
+    const vector = BitVector.fromBitfield(Buffer.alloc(1, 4), 8);
+    let lastIndex = 0;
+    vector.forEach((bit, index) => {
+      expect(bit).to.be.equal(vector.getBit(index));
+      lastIndex = index;
+    });
+    expect(lastIndex).to.be.equal(7);
+  });
+
   it("should push properly", () => {
     const testCases: { pre: BitVector; value: boolean; post: BitVector }[] = [
       {
@@ -95,13 +116,13 @@ describe("BitVector", () => {
       expect(pre.equals(post)).to.equal(true);
     }
   });
-  it("should identify a BitList properly", () => {
+  it("should identify a BitVector properly", () => {
     const b1 = BitVector.fromBitfield(Buffer.alloc(1), 8);
     const b2 = {};
     const b3 = [true, true];
     expect(BitVector.isBitVector(b1)).to.equal(true);
     expect(BitVector.isBitVector(b2)).to.equal(false);
-    expect(BitVector.isBitVector(b2)).to.equal(false);
+    expect(BitVector.isBitVector(b3)).to.equal(false);
   });
 
   it('should apply other array with or operator', function () {

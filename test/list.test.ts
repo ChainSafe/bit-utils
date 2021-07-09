@@ -127,6 +127,27 @@ describe("BitList", () => {
     b1.setBit(0, true);
     expect(b1.equals(b2)).to.equal(false);
   });
+
+  it("should iterate", () => {
+    const list = BitList.fromBitfield(Buffer.alloc(1, 4), 8);
+    let index = 0;
+    for(let bit of list) {
+      expect(bit).to.be.equal(list.getBit(index));
+      index++;
+    }
+    expect(index).to.be.equal(8);
+  });
+
+  it("should foreach", () => {
+    const list = BitList.fromBitfield(Buffer.alloc(1, 4), 8);
+    let lastIndex = 0;
+    list.forEach((bit, index) => {
+      expect(bit).to.be.equal(list.getBit(index));
+      lastIndex = index;
+    });
+    expect(lastIndex).to.be.equal(7);
+  });
+
   it("should identify a BitList properly", () => {
     const b1 = BitList.fromBitfield(Buffer.alloc(1), 8);
     const b2 = {};
